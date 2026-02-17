@@ -8,20 +8,17 @@ public class UseCase1PalindromeCheckerApp {
 
         boolean isPalindrome = true;
         int length = word.length();
-
-        for (int i = 0; i < length / 2; i++) {
-            if (word.charAt(i) != word.charAt(length - 1 - i)) {
-                isPalindrome = false;
-                break;
-            }
+        String Reverse ="";
+        for (int i = length-1; i >=0; i--) {
+            Reverse += word.charAt(i);
         }
+        if (word.equals(Reverse)){
+            System.out.println("Result: The string is a palindrome.");
 
-        if (isPalindrome) {
-            System.out.println(word + " is a palindrome.");
-        } else {
-            System.out.println(word + " is NOT a palindrome.");
         }
-
-        sc.close();
+        else
+        {
+            System.out.println("Result: The string NOT a palindrome.");
+        }
     }
 }
