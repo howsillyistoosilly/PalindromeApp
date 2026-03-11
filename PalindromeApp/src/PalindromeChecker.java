@@ -2,27 +2,34 @@ import java.util.Scanner;
 
 public class PalindromeChecker {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter String to Check for Palindrome:");
-        String word = sc.nextLine();
+        Scanner scanner = new Scanner(System.in);
 
+        System.out.println("Enter a string to check if it's a palindrome:");
+        String input = scanner.nextLine();
+
+        // Convert string to character array (UC4 requirement)
+        char[] chars = input.toCharArray();
+        int left = 0;
+        int right = chars.length - 1;
         boolean isPalindrome = true;
 
-        int length = word.length();
-        int start = 0;
-        int end = length -1;
-        while (start<end){
-            if (word.charAt(start)!= word.charAt(end)){
+        // Two-pointer technique: compare characters from start and end
+        while (left < right) {
+            if (chars[left] != chars[right]) {
                 isPalindrome = false;
+                break;
             }
-            start++;
-            end--;
-            }
-        if (isPalindrome = true){
-            System.out.println("Result : Given word is a palindrome");
+            left++;
+            right--;
         }
-        else{
-            System.out.println("Result : Given word is Not a palindrome");
+
+        // Output result
+        if (isPalindrome) {
+            System.out.println("\"" + input + "\" is a palindrome.");
+        } else {
+            System.out.println("\"" + input + "\" is not a palindrome.");
         }
+
+        scanner.close();
     }
 }
