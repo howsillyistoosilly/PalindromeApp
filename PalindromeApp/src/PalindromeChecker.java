@@ -1,16 +1,5 @@
 import java.util.Scanner;
 
-// Node class for singly linked list
-class ListNode {
-    char data;
-    ListNode next;
-
-    ListNode(char data) {
-        this.data = data;
-        this.next = null;
-    }
-}
-
 public class PalindromeChecker {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -18,22 +7,8 @@ public class PalindromeChecker {
         System.out.println("Enter a string to check if it's a palindrome:");
         String input = scanner.nextLine();
 
-        // UC8: Convert string to linked list
-        ListNode head = null;
-        ListNode tail = null;
-
-        for (char c : input.toCharArray()) {
-            ListNode newNode = new ListNode(c);
-            if (head == null) {
-                head = tail = newNode;
-            } else {
-                tail.next = newNode;
-                tail = newNode;
-            }
-        }
-
-        // Check palindrome using fast-slow pointer + reverse
-        boolean isPalindrome = isPalindrome(head);
+        // UC9: Recursive palindrome check
+        boolean isPalindrome = isPalindromeRecursive(input, 0, input.length() - 1);
 
         // Output result
         if (isPalindrome) {
@@ -45,49 +20,19 @@ public class PalindromeChecker {
         scanner.close();
     }
 
-    // UC8 Core Logic: Fast-Slow Pointer + Reverse Second Half
-    public static boolean isPalindrome(ListNode head) {
-        if (head == null || head.next == null) return true;
-
-        // Step 1: Find middle using fast-slow pointers
-        ListNode slow = head;
-        ListNode fast = head;
-        ListNode prevSlow = null;
-
-        while (fast != null && fast.next != null) {
-            fast = fast.next.next;      // Fast moves 2 steps
-            prevSlow = slow;
-            slow = slow.next;           // Slow moves 1 step
+    // UC9 Core Logic: Recursive palindrome checker
+    public static boolean isPalindromeRecursive(String str, int left, int right) {
+        // Base conditions
+        if (left >= right) {
+            return true;  // Single char or empty string is palindrome
         }
 
-        // Step 2: Reverse second half
-        prevSlow.next = null;           // Split list
-        ListNode secondHalf = reverse(slow);
-
-        // Step 3: Compare first half with reversed second half
-        ListNode firstHalf = head;
-        while (firstHalf != null && secondHalf != null) {
-            if (firstHalf.data != secondHalf.data) {
-                return false;
-            }
-            firstHalf = firstHalf.next;
-            secondHalf = secondHalf.next;
+        // Compare first and last characters
+        if (str.charAt(left) != str.charAt(right)) {
+            return false;
         }
 
-        return firstHalf == null && secondHalf == null;
-    }
-
-    // In-place reversal of second half
-    public static ListNode reverse(ListNode head) {
-        ListNode prev = null;
-        ListNode current = head;
-
-        while (current != null) {
-            ListNode nextTemp = current.next;
-            current.next = prev;
-            prev = current;
-            current = nextTemp;
-        }
-        return prev;
+        // Recursive call: check inner substring
+        return isPalindromeRecursive(str, left + 1, right - 1);
     }
 }
