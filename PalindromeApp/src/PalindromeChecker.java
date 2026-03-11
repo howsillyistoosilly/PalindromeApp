@@ -1,5 +1,7 @@
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class PalindromeChecker {
     public static void main(String[] args) {
@@ -8,25 +10,30 @@ public class PalindromeChecker {
         System.out.println("Enter a string to check if it's a palindrome:");
         String input = scanner.nextLine();
 
-        // UC5: Stack-based palindrome check
+        // UC6: Queue + Stack based palindrome check
+        Queue<Character> queue = new LinkedList<>();
         Stack<Character> stack = new Stack<>();
 
-        // Push all characters into stack
+        // Enqueue AND Push all characters
         for (char c : input.toCharArray()) {
-            stack.push(c);
+            queue.offer(c);      // FIFO: Enqueue (front)
+            stack.push(c);       // LIFO: Push (top)
         }
 
-        // Pop from stack and compare with original characters
+        // Compare dequeue vs pop until queue is empty
         boolean isPalindrome = true;
-        for (int i = 0; i < input.length(); i++) {
-            if (stack.isEmpty() || input.charAt(i) != stack.pop()) {
+        while (!queue.isEmpty()) {
+            char queueFront = queue.poll();    // FIFO: Dequeue from front
+            char stackTop = stack.pop();       // LIFO: Pop from top
+
+            if (queueFront != stackTop) {
                 isPalindrome = false;
                 break;
             }
         }
 
         // Output result
-        if (isPalindrome && stack.isEmpty()) {
+        if (isPalindrome) {
             System.out.println("\"" + input + "\" is a palindrome.");
         } else {
             System.out.println("\"" + input + "\" is not a palindrome.");
