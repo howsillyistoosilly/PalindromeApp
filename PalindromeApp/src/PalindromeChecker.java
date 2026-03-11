@@ -1,7 +1,6 @@
 import java.util.Scanner;
-import java.util.Stack;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class PalindromeChecker {
     public static void main(String[] args) {
@@ -10,23 +9,21 @@ public class PalindromeChecker {
         System.out.println("Enter a string to check if it's a palindrome:");
         String input = scanner.nextLine();
 
-        // UC6: Queue + Stack based palindrome check
-        Queue<Character> queue = new LinkedList<>();
-        Stack<Character> stack = new Stack<>();
+        // UC7: Deque-based optimized palindrome check
+        Deque<Character> deque = new ArrayDeque<>();
 
-        // Enqueue AND Push all characters
+        // Insert all characters into deque
         for (char c : input.toCharArray()) {
-            queue.offer(c);      // FIFO: Enqueue (front)
-            stack.push(c);       // LIFO: Push (top)
+            deque.offerLast(c);
         }
 
-        // Compare dequeue vs pop until queue is empty
+        // Compare front and rear until deque is empty
         boolean isPalindrome = true;
-        while (!queue.isEmpty()) {
-            char queueFront = queue.poll();    // FIFO: Dequeue from front
-            char stackTop = stack.pop();       // LIFO: Pop from top
+        while (deque.size() > 1) {
+            char front = deque.pollFirst();   // Remove from front
+            char rear = deque.pollLast();     // Remove from rear
 
-            if (queueFront != stackTop) {
+            if (front != rear) {
                 isPalindrome = false;
                 break;
             }
